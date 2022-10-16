@@ -6,5 +6,5 @@ services:
             - "4200:4200"
         volumes:
             - "/app/node_modules"
-            - ".:/app"
+            - "./paymybuddy-client:/app"
 #exemple to add component : # docker-compose exec web ng generate component nameComponent

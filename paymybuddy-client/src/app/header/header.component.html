@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">
+        <img width="150" alt="Paymybuddy Logo"  src="assets/pay-my-butty-logo.png"/>
+      </a>
+  <div class="collapse navbar-collapse justify-content-end" >
+    <ul class="navbar-nav justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link" href="#">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Transfer</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact</a>
+      </li>
+      <li  *ngIf="user" class="nav-item bg-danger">
+        <a class="nav-link" (click)="logout()">Se déconnecter</a>
+      </li>
+    </ul>
+  </div>
+</nav>
