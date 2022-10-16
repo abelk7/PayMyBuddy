@@ -7,10 +7,62 @@ import { ProfileComponent } from './profile/profile.component';
 import { TransferComponent } from './transfer/transfer.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent},
-  { path: 'transfer', component: TransferComponent},
-  { path: 'profile', component: ProfileComponent},
-  { path: 'contact', component: ContactComponent},
+  { path: 'home', component: HomeComponent,
+    data: {
+      title: 'home',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: ''
+        }
+      ]
+    }
+  },
+  { path: 'transfer', component: TransferComponent,
+  data: {
+    title: 'transfer',
+    breadcrumb: [
+      {
+        label: 'Home',
+        url: '/home'
+      },
+      {
+        label: 'Transfer',
+        url: '/transfer'
+      }
+    ]
+  }
+  },
+  { path: 'profile', component: ProfileComponent,
+  data: {
+    title: 'profile',
+    breadcrumb: [
+      {
+        label: 'Home',
+        url: '/home'
+      },
+      {
+        label: 'Profile',
+        url: '/profile'
+      }
+    ]
+  }
+  },
+  { path: 'contact', component: ContactComponent,
+  data: {
+    title: 'contact',
+    breadcrumb: [
+      {
+        label: 'Home',
+        url: '/home'
+      },
+      {
+        label: 'Contact',
+        url: '/contact'
+      }
+    ]
+  }
+  },
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: '**', redirectTo: '/home', pathMatch: 'full'}
 ];

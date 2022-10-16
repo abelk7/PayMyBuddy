@@ -8,6 +8,7 @@ import { TransferComponent } from './transfer/transfer.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
+import {NgDynamicBreadcrumbModule} from "ng-dynamic-breadcrumb";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { HomeComponent } from './home/home.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgDynamicBreadcrumbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
