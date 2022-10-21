@@ -1,0 +1,29 @@
+.align-horizontal{
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.form-normal {
+  width: 500px;
+}
+
+.card {
+  margin-top: 50px;
+  padding: 20px;
+  width: 700px;
+}
+
+.form button {
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+form h2{
+  text-align: center;
+}
+
+#submit {
+  width: 50%;
+}

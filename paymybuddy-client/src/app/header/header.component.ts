@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+declare var $: any;
 
 @Component({
   selector: 'app-header',
@@ -7,15 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  user : Boolean = true;
+  userIsLogged : Boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
+    //Active menu
+    $('#navmenu .navbar-nav a' ).on( 'click', function () {
+      $( '#navmenu .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
+      $(this).parent( 'li' ).addClass( 'active' );
+    });
+
   }
 
   logout() {
-
   }
 
 }

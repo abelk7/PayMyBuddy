@@ -1,0 +1,88 @@
+<div class="card align-horizontal">
+	<form class="form-normal align-horizontal" #userForm="ngForm" (ngSubmit)="userForm.form.valid && onSubmit(userForm)">
+
+		<h2>Inscription</h2>
+
+		<!--Nom-->
+		  <div class="form-group mb-3">
+			  <label for="inputNom">Nom</label>
+			  <input type="text" name="nom" id="inputNom" class="form-control" [(ngModel)]="user.nom" #nom="ngModel"
+					  [ngClass]="{ 'is-invalid': userForm.submitted && nom.invalid, 'is-valid': nom.valid}" required>
+			  <div class="invalid-feedback" *ngIf="userForm.submitted && nom.invalid">
+					  <small *ngIf="nom.errors ?. required">Le nom est requis.</small>
+			  </div>
+		  <div class="valid-feedback" *ngIf="userForm.submitted && nom.valid">
+			<small>Le nom est valide.</small>
+		</div>
+		</div>
+
+		<!--Prenom-->
+		  <div class="form-group mb-3">
+			  <label for="inputPrenom">Prénom</label>
+			  <input type="text" name="prenom" id="inputPrenom" class="form-control" [(ngModel)]="user.prenom" #prenom="ngModel"
+					  [ngClass]="{ 'is-invalid': userForm.submitted && prenom.invalid, 'is-valid': prenom.valid }" required>
+			  <div class="invalid-feedback" *ngIf="userForm.submitted && prenom.invalid">
+					  <small *ngIf="nom.errors ?. required">Le prénom est requis.</small>
+			  </div>
+		  <div class="valid-feedback" *ngIf="userForm.submitted && prenom.valid">
+			<small>Le prenom est valide.</small>
+		</div>
+		</div>
+
+		  <!--Email-->
+		  <div class="form-group mb-3">
+		  <label for="inputEmail">Email</label>
+		  <input type="email" id="inputEmail" class="form-control" name="email" [(ngModel)]="user.email" #email="ngModel"
+			  [ngClass]="{ 'is-invalid': userForm.submitted && email.invalid, 'is-valid': userForm.submitted && email.valid  }" email required>
+		  <div *ngIf="userForm.submitted && email.invalid" class="invalid-feedback">
+			  <small *ngIf="email.errors ?. required">l'adresse email est requis.</small>
+			  <small *ngIf="email.errors ?. email">L'adresse email doit être valide.</small>
+		  </div>
+		  <div class="valid-feedback" *ngIf="userForm.submitted && email.valid">
+			<small>L'adresse email est valide.</small>
+		</div>
+	  </div>
+
+	  <!--Password-->
+	  <div class="form-group mb-3">
+		<label for="inputPassword">Mot de passe</label>
+		<input type="password" id="inputPassword"class="form-control" name="password" [(ngModel)]="user.password" #password="ngModel"
+			[ngClass]="{ 'is-invalid': userForm.submitted && password.invalid, 'is-valid': userForm.submitted && password.valid  }" minlength="8" required>
+		<div *ngIf="userForm.submitted && password.invalid" class="invalid-feedback">
+			<small *ngIf="password.errors?.required">Le mot de passe est requis.</small>
+			<small *ngIf="password.errors?.minlength">Le mot de passe doit contenir 8 caractères au minimum.</small>
+		</div>
+		<div class="valid-feedback" *ngIf="userForm.submitted && password.valid">
+		  <small>Le mot de passe est valide.</small>
+	  </div>
+	  </div>
+
+	  <!--Confirmation Password-->
+	  <div class="form-group mb-3">
+		<label for="inputRpPassword">Confirmation du mot de passe</label>
+		<input type="password" id="inputRpPassword" class="form-control" name="rppassword" [(ngModel)]="user.rppassword" #rppassword="ngModel"
+			[ngClass]="{ 'is-invalid': userForm.submitted && user.password !== user.rppassword, 'is-valid': userForm.submitted && user.password != '' &&  user.password == user.rppassword }"  required>
+		<div *ngIf="userForm.submitted && user.password !== user.rppassword" class="invalid-feedback">
+			<small *ngIf="userForm.submitted && user.password !== user.rppassword">Les mots de passe doivent être identiques.</small>
+		</div>
+		<div class="valid-feedback" *ngIf="userForm.submitted && password.valid && user.password === user.rppassword">
+	  </div>
+	  </div>
+
+		<!--Prenom-->
+		  <div class="form-group mb-3">
+			  <label for="inputDateNaissance">Date de naissance</label>
+			  <input type="date" name="date_naissance" id="inputDateNaissance" class="form-control" [(ngModel)]="user.date_naissance" #date_naissance="ngModel"
+					  [ngClass]="{ 'is-invalid': userForm.submitted && date_naissance.errors ?.max > '2000-01-01'}"  required max='2004-01-01'>
+			  <div class="valid-feedback" *ngIf="userForm.submitted && date_naissance.valid ">
+					  <small *ngIf="userForm.submitted && date_naissance.valid ">Vous devez avoir 18 ans minimum pour vous inscrire</small>
+			  </div>
+		</div>
+
+    <div class="text-center">
+      <button id="submit" class="btn btn-primary btn-md" type="submit">Register</button>
+    </div>
+
+	  </form>
+
+</div>

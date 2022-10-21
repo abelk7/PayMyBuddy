@@ -3,7 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
+import { RegisterComponent } from './register/register.component';
 import { TransferComponent } from './transfer/transfer.component';
 
 const routes: Routes = [
@@ -19,50 +21,80 @@ const routes: Routes = [
     }
   },
   { path: 'transfer', component: TransferComponent,
-  data: {
-    title: 'transfer',
-    breadcrumb: [
-      {
-        label: 'Home',
-        url: '/home'
-      },
-      {
-        label: 'Transfer',
-        url: '/transfer'
-      }
-    ]
-  }
+    data: {
+      title: 'transfer',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'home'
+        },
+        {
+          label: 'Transfer',
+          url: ''
+        }
+      ]
+    }
   },
   { path: 'profile', component: ProfileComponent,
-  data: {
-    title: 'profile',
-    breadcrumb: [
-      {
-        label: 'Home',
-        url: '/home'
-      },
-      {
-        label: 'Profile',
-        url: '/profile'
+      data: {
+        title: 'profile',
+        breadcrumb: [
+          {
+            label: 'Home',
+            url: 'home'
+          },
+          {
+            label: 'Profile',
+            url: ''
+          }
+        ]
       }
-    ]
-  }
   },
   { path: 'contact', component: ContactComponent,
+    data: {
+      title: 'contact',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'home'
+        },
+        {
+          label: 'Contact',
+          url: ''
+        }
+      ]
+    }
+  },
+  { path: 'login', component: LoginComponent,
+    data: {
+      title: 'login',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'home'
+        },
+        {
+          label: 'Login',
+          url: ''
+        }
+      ]
+    }
+  },
+  { path: 'register', component: RegisterComponent,
   data: {
-    title: 'contact',
+    title: 'register',
     breadcrumb: [
       {
         label: 'Home',
-        url: '/home'
+        url: 'home'
       },
       {
-        label: 'Contact',
-        url: '/contact'
+        label: 'Register',
+        url: ''
       }
     ]
   }
-  },
+},
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: '**', redirectTo: '/home', pathMatch: 'full'}
 ];
