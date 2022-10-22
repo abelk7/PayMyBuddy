@@ -1,0 +1,34 @@
+<div class="card align-horizontal">
+<form class="form-normal align-horizontal" #userForm="ngForm" (ngSubmit)="userForm.form.valid && onSubmit(userForm)">
+    <h2>Connexion</h2>
+  <!--Email-->
+  <div class="form-group mb-3">
+      <label for="inputEmail">Email</label>
+      <input type="email" id="inputEmail" class="form-control" name="email" [(ngModel)]="user.email" #email="ngModel"
+          [ngClass]="{ 'is-invalid': userForm.submitted && email.invalid, 'is-valid': userForm.submitted && email.valid  }" email required>
+      <div *ngIf="userForm.submitted && email.invalid" class="invalid-feedback">
+          <small *ngIf="email.errors ?. required">l'adresse email est requis.</small>
+          <small *ngIf="email.errors ?. email">L'adresse email doit être valide.</small>
+      </div>
+      <div class="valid-feedback" *ngIf="userForm.submitted && email.valid">
+        <small>L'adresse email est valide.</small>
+    </div>
+  </div>
+
+  <!--Password-->
+  <div class="form-group mb-3">
+    <label for="inputPassword">Mot de passe</label>
+    <input type="password" id="inputPassword"class="form-control" name="password" [(ngModel)]="user.password"  #password="ngModel" required>
+    <div *ngIf="userForm.submitted && password.invalid" class="invalid-feedback">
+        <small *ngIf="password.errors?.required">Le mot de passe est requis.</small>
+        <small *ngIf="password.errors?.minlength">Le mot de passe doit contenir 8 caractères au minimum.</small>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <button id="submit" class="btn btn-primary btn-md" type="submit">Login</button>
+  </div>
+
+  </form>
+</div>
+

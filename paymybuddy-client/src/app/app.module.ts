@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +10,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import {NgDynamicBreadcrumbModule} from "ng-dynamic-breadcrumb";
+import { LoginComponent } from './login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RegisterComponent } from './register/register.component';
+
 
 @NgModule({
   declarations: [
@@ -17,12 +22,18 @@ import {NgDynamicBreadcrumbModule} from "ng-dynamic-breadcrumb";
     TransferComponent,
     ProfileComponent,
     ContactComponent,
-    HomeComponent
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgDynamicBreadcrumbModule
+    NgDynamicBreadcrumbModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

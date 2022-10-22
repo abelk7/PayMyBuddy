@@ -1,24 +1,39 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+
+
+
+<!--TODO-->
+<nav id="navmenu" class="navbar navbar-expand-sm navbar-light bg-light">
       <a class="navbar-brand" href="#">
         <img width="150" alt="Paymybuddy Logo"  src="assets/pay-my-butty-logo.png"/>
       </a>
   <div class="collapse navbar-collapse justify-content-end" >
     <ul class="navbar-nav justify-content-end">
-      <li class="nav-item">
+      <li class="nav-item active">
         <a routerLink="/" class="nav-link">Home</a>
       </li>
       <li class="nav-item">
-        <a routerLink="transfer" class="nav-link">Transfer</a>
+        <a routerLink="/transfer" class="nav-link">Transfer</a>
       </li>
       <li class="nav-item">
-        <a routerLink="profile" class="nav-link">Profile</a>
+        <a routerLink="/profile" class="nav-link">Profile</a>
       </li>
       <li class="nav-item">
-        <a routerLink="contact" class="nav-link">Contact</a>
+        <a routerLink="/contact" class="nav-link">Contact</a>
       </li>
-      <li  *ngIf="user" class="nav-item bg-danger">
+      <li class="/nav-item">
+        <a routerLink="login" class="nav-link">Login</a>
+      </li>
+      <li class="/nav-item">
+        <a routerLink="register" class="nav-link">Register</a>
+      </li>
+      <!-- <li  *ngIf="userIsLogged" class="nav-item bg-danger">
         <a class="nav-link" (click)="logout()">Se déconnecter</a>
       </li>
+      <li  *ngIf="!userIsLogged" class="nav-item bg-primary">
+        <a routerLink="login" class="nav-link">Se connecter</a>
+      </li> -->
     </ul>
   </div>
 </nav>
+
+

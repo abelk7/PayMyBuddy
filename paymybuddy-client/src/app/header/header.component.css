@@ -1,5 +1,34 @@
 nav {
   padding-left: 10px;
   padding-right: 15px;
-  height: 70px;
+  height: 50px;
 }
+
+
+/*code to change background color*/
+.navbar-nav>.active>a {
+  color: rgb(0, 125, 220);
+  font-weight: 450;
+}
+
+ .navbar-nav li a {
+  color: black;
+}
+/*
+.navbar-nav > .active > a {
+  color: red ;
+} */
+
+
+/* .nav-link {
+  color: green;
+}
+
+.nav-item>a:hover {
+  color: green;
+}
+
+
+/* #navmenu ul li{
+  color: blueviolet;
+} */
