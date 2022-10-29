@@ -1,10 +1,16 @@
 version: '3'
 services:
-    web:
+    client:
         build: paymybuddy-client/
         ports:
             - "4200:4200"
         volumes:
             - "/app/node_modules"
             - "./paymybuddy-client:/app"
+
+    # backend:
+    #     build: paymybuddy-backend/
+    #     ports:
+    #         - "8080:8080"
+
 #exemple to add component : # docker-compose exec web ng generate component nameComponent

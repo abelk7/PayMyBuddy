@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Route, Router } from '@angular/router'
+import { ActivatedRoute, Route, Router } from '@angular/router'
 import { User } from '../model/user';
+import { AuthService } from '../service/auth.service';
+import { first } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-login',
@@ -10,6 +13,8 @@ import { User } from '../model/user';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+
 
   form!: FormGroup;
 
@@ -20,9 +25,11 @@ export class LoginComponent implements OnInit {
 
 
   constructor(
-    private httpClient: HttpClient,
+    private http: HttpClient,
     private router:Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authenticationService : AuthService,
+    private route: ActivatedRoute,
     ) {
 
     }
@@ -33,13 +40,36 @@ export class LoginComponent implements OnInit {
   user = new User();
 
   onSubmit(form: any) {
-    this.httpClient.post('http://localhost:8080/login', {
-      'email':form.controls.email.value,
-      'password': form.controls.password.value
-    })
-    .subscribe( () => {
-          this.router.navigate(['/login']);
+
+  this.authenticationService.login(form.controls.email.value, form.controls.password.value)
+      .pipe(first())
+      .subscribe({
+        next: (data) => {
+          // switch (data.status) {
+          //   case 'success':
+          //     this.alertService.success('Vous êtes maintenant connecté.', { keepAfterRouteChange: true });
+          //     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/actualite';
+          //     this.router.navigateByUrl(returnUrl);
+          //     break;
+          //   case 'error':
+          //     this.alertService.error(data.message);
+          //     this.loading = false;
+          //     break;
+          //   case 'error-confirm':
+          //     console.log("Je suis dans le error confirm");
+          //     this.alertService.warn(data.message, { keepAfterRouteChange: true });
+          //     this.router.navigate(['/confirm']);
+          //     break;
+
+          //   default:
+          //     break;
+          // }
+          // console.log(data);
+        },
+        error: (error) => {
+          console.log(error);
+        },
       });
-      console.log("Formulaire inscription envoyé");
+
   }
 }
