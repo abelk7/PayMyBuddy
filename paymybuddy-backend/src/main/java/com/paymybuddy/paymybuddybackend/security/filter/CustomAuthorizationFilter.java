@@ -3,8 +3,10 @@ package com.paymybuddy.paymybuddybackend.security.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paymybuddy.paymybuddybackend.Util.TokenManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,10 +41,14 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
-                }catch (Exception exception) {
+                }catch (TokenExpiredException tokenExpiredException){
+                    TokenManager tokenManager = new TokenManager(Algorithm.HMAC512("secret".getBytes()));
+                    tokenManager.refreshToken(request, response, filterChain);
+                }
+                catch (Exception exception) {
                     log.error("Error loggin : {} ", exception.getMessage());
                     response.setHeader("error", exception.getMessage());
-                    response.setStatus(FORBIDDEN.value());
+
 
                     Map<String, String> error = new HashMap<>();
                     error.put("error_message", exception.getMessage());

@@ -4,11 +4,14 @@ import com.paymybuddy.paymybuddybackend.model.TypeTransaction;
 import com.paymybuddy.paymybuddybackend.model.User;
 import com.paymybuddy.paymybuddybackend.service.TypeTransactionService;
 import com.paymybuddy.paymybuddybackend.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +19,9 @@ import java.util.Date;
 
 @SpringBootApplication
 public class PaymybuddyBackendApplication {
+
+	@Value("${client.url}")
+	private String clientUrl;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PaymybuddyBackendApplication.class, args);
@@ -48,5 +54,16 @@ public class PaymybuddyBackendApplication {
 	BCryptPasswordEncoder passwordEncoder() {
 		return  new BCryptPasswordEncoder();
 	}
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins(clientUrl);
+			}
+		};
+	}
+
 
 }
