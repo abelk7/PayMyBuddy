@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
@@ -11,37 +11,32 @@ import { map } from 'rxjs/operators';
 })
 export class AuthService {
 
-  // private currentUserSubject: BehaviorSubject<User>;
-  // public currentUser: Observable<User>;
+  static access_token : any;
+  static refresh_token : any;
+
 
   constructor(private http: HttpClient) {
-    // this.currentUserSubject = new BehaviorSubject<User>(
-    //   JSON.parse(sessionStorage.getItem('token'))
-    // );
-    // this.currentUser = this.currentUserSubject.asObservable();
-    //JSON.parse(sessionStorage.)
+    if(sessionStorage.getItem("access_token") != null){
+      AuthService.access_token =  sessionStorage.getItem("access_token");
+    }
+    if(sessionStorage.getItem("refresh_token") != null) {
+      AuthService.refresh_token = sessionStorage.getItem("refresh_token");
+    }
   }
 
-  /**
-   * Login
-   */
-  // login(login: string, password :string){
-  //   // return this.http.post<any>(`${environment.apiUrl}/login`, {"login":login, "password":password})
-  //   // .subscribe( (result) => {
-  //   //   console.log("Utilisateur connecté, avec login"+login +" pass:"+password);
-  //   //   sessionStorage.setItem('token', JSON.stringify(result))
-  //   // })
-  //   this.http.get(`${environment.apiUrl}/login`).pipe(first()).subscribe({
-  //     next: (data) => {
-  //       console.log(data);
-  //     }
-  //   })
 
+  login(email: string, password: string) {
 
-  // }
-  login(login: string, password: string) {
-    return this.http.post<any>(`${environment.apiUrl}/login`, { login, password })
-    .pipe(map((user) => {
+    let body = new URLSearchParams();
+    body.set('email', email);
+    body.set('password', password);
+
+    let options = {
+      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+    };
+
+    return this.http.post<any>(`${environment.apiUrl}/login`, body.toString(), options)
+    .pipe(map((response) => {
         // if (user.status === 'success') {
         //     //this.service.setValue(true);
         //     // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
@@ -50,9 +45,10 @@ export class AuthService {
         //     //this.currentUserSubject.next(user);
         //   }
 
-        console.log(user);
+        sessionStorage.setItem("access_token", response.access_token);
+        sessionStorage.setItem("refresh_token", response.refresh_token);
 
-          return user;
+          return response;
         })
       );
 

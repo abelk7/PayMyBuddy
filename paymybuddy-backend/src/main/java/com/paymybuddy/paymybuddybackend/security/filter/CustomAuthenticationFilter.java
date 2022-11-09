@@ -32,6 +32,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String email = request.getParameter("email");
+        String test = request.getHeader("email");
         String password = request.getParameter("password");
 
         log.info("Try login with Email:{} & Password: {}",email, password);
@@ -48,18 +49,22 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         User userDetail = (User) auth.getPrincipal();
 
         String access_token = tokenManager.getToken(request, response, auth, userDetail.getUsername(),
-                tokenManager.timeValidToken(10, DURATION.MIN));
+                tokenManager.timeValidToken(0, DURATION.MIN));
 
         String refresh_token = tokenManager.getToken(request, response, auth, userDetail.getUsername(),
-                tokenManager.timeValidToken(20, DURATION.MIN));
+                tokenManager.timeValidToken(30, DURATION.MIN));
 
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", access_token);
-        tokens.put("refresh_token", refresh_token);
+        Map<String, String> result = new HashMap<>();
+        result.put("access_token", access_token);
+        result.put("refresh_token", refresh_token);
+
+
 
         response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_OK);
 
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+
+        new ObjectMapper().writeValue(response.getOutputStream(), result);
     }
 
     @Override
