@@ -1,14 +1,14 @@
 package com.paymybuddy.paymybuddybackend.service.impl;
 
+import com.paymybuddy.paymybuddybackend.exception.UserNotFoundException;
 import com.paymybuddy.paymybuddybackend.model.User;
 import com.paymybuddy.paymybuddybackend.repository.UserRepository;
-import com.paymybuddy.paymybuddybackend.service.UserService;
+import com.paymybuddy.paymybuddybackend.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,21 +16,23 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Service
+@Service("userService")
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements IUserService, UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UserNotFoundException {
         User user = userRepository.findByEmail(email);
 
         if(user == null) {
             log.error("User with email : {} are not Found", email);
-            throw new UsernameNotFoundException("User not found in the database");
+            throw new UserNotFoundException("Votre identifiant est incorrect");
+
+
         } else {
             log.error("User with email : {} Found ", email);
         }

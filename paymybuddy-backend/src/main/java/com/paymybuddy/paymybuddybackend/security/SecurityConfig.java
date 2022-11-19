@@ -70,7 +70,11 @@ public class SecurityConfig {
 
         http.csrf()
                 .disable()
-                .authorizeHttpRequests().antMatchers("/api/**", "/api/token/**", "/api/bonjour/**").permitAll()
+                .authorizeHttpRequests().antMatchers(
+                        "/api/**",
+                        "/api/token/**",
+                        "/api/addConnection/**"
+                ).permitAll()
                 .and()
                 .cors()
                 .and()

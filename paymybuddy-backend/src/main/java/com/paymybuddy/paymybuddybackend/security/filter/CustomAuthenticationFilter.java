@@ -1,10 +1,12 @@
 package com.paymybuddy.paymybuddybackend.security.filter;
 
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paymybuddy.paymybuddybackend.Util.TokenManager;
+import com.paymybuddy.paymybuddybackend.Util.TokenManager.TOKEN_TYPE;
 import com.paymybuddy.paymybuddybackend.Util.TokenManager.DURATION;
+import com.paymybuddy.paymybuddybackend.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,8 +26,15 @@ import java.util.Map;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
 
+    @Autowired
+    private TokenManager tokenService;
 
-    public CustomAuthenticationFilter( AuthenticationManager authenticationManager){
+    @Override
+    public AuthenticationManager getAuthenticationManager() {
+        return authenticationManager;
+    }
+
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager){
         this.authenticationManager = authenticationManager;
     }
 
@@ -34,6 +43,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String email = request.getParameter("email");
         String test = request.getHeader("email");
         String password = request.getParameter("password");
+
+
 
         log.info("Try login with Email:{} & Password: {}",email, password);
 
@@ -44,31 +55,38 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException, ServletException {
-
-        TokenManager tokenManager = new TokenManager(Algorithm.HMAC512("secret".getBytes()));
+//        TokenManager tokenManager = new TokenManager(Algorithm.HMAC512(tokenManager.getEncryptToken().getBytes()));
+        TokenManager tokenManager1 = new TokenManager();
         User userDetail = (User) auth.getPrincipal();
+        Map<String, String> content = new HashMap<>();
 
-        String access_token = tokenManager.getToken(request, response, auth, userDetail.getUsername(),
-                tokenManager.timeValidToken(0, DURATION.MIN));
-
-        String refresh_token = tokenManager.getToken(request, response, auth, userDetail.getUsername(),
-                tokenManager.timeValidToken(30, DURATION.MIN));
-
-        Map<String, String> result = new HashMap<>();
-        result.put("access_token", access_token);
-        result.put("refresh_token", refresh_token);
+        String access_token = tokenService.getToken(request, response, auth, userDetail.getUsername(), TOKEN_TYPE.ACCESS_TOKEN,DURATION.MIN);
 
 
+        String refresh_token = tokenService.getToken(request, response, auth, userDetail.getUsername(), TOKEN_TYPE.REFRESH_TOKEN, DURATION.MIN);
 
-        response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        content.put("access_token", access_token);
+        content.put("refresh_token", refresh_token);
+        content.put("userEmail", userDetail.getUsername());
 
-
-        new ObjectMapper().writeValue(response.getOutputStream(), result);
+        new ObjectMapper().writeValue(response.getOutputStream(), content);
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        super.unsuccessfulAuthentication(request, response, failed);
+        Map<String, String> content = new HashMap<>();
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+
+        if (failed.getCause() instanceof UserNotFoundException) {
+            //response.sendError((HttpServletResponse.SC_UNAUTHORIZED), failed.getMessage());
+            content.put("message", failed.getMessage());
+        }else {
+            content.put("message", "Mot de passe incorrect.");
+        }
+        content.put("error", String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
+        new ObjectMapper().writeValue(response.getOutputStream(), content);
     }
 }

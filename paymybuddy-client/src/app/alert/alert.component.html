@@ -1,0 +1,5 @@
+<div *ngFor="let alert of alerts" class="{{cssClass(alert)}} mb-5" id="popup">
+<!--    <a (click)="removeAlert(alert)" class="close">&times;</a>-->
+    <span [innerHTML]="alert.message"></span>
+    <button id="closePopup" type="button" class="btn-close  float-end btn-sm" (click)="removeAlert(alert)" aria-label="Close"></button>
+</div>

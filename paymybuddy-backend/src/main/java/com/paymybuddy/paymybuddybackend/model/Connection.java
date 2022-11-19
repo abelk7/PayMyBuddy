@@ -10,13 +10,14 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "connexion")
-public class Connexion {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Table(name = "connetion")
+public class Connection {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String etat;
+    private String status;
     @OneToOne
-    private User userExpediteur;
+    private User senderUser;
     @OneToOne
-    private User userDestinataire;
+    private User recipientUser;
 }
