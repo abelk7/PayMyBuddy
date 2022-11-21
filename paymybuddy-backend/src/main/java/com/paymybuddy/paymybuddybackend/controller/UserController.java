@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paymybuddy.paymybuddybackend.model.User;
-import com.paymybuddy.paymybuddybackend.service.UserService;
+import com.paymybuddy.paymybuddybackend.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,8 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
+    private final IUserService IUserService;
+
 
     @GetMapping("/bonjour")
     @ResponseBody
@@ -38,6 +39,8 @@ public class UserController {
         return ResponseEntity.ok().body(result);
     }
 
+
+
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -48,7 +51,7 @@ public class UserController {
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String userEmail = decodedJWT.getSubject();
-                User user = userService.getUser(userEmail);
+                User user = IUserService.getUser(userEmail);
                 String access_token = JWT.create()
                         .withSubject(user.getEmail())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))

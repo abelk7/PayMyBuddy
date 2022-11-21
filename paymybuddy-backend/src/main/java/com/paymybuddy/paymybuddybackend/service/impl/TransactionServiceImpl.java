@@ -2,7 +2,7 @@ package com.paymybuddy.paymybuddybackend.service.impl;
 
 import com.paymybuddy.paymybuddybackend.model.Transaction;
 import com.paymybuddy.paymybuddybackend.repository.TransactionRepository;
-import com.paymybuddy.paymybuddybackend.service.TransactionService;
+import com.paymybuddy.paymybuddybackend.service.ITransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class TransactionServiceImpl implements TransactionService {
+public class TransactionServiceImpl implements ITransactionService {
     private final TransactionRepository transactionRepository;
 
     @Override

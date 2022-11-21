@@ -1,12 +1,8 @@
 package com.paymybuddy.paymybuddybackend.service;
 
-import com.paymybuddy.paymybuddybackend.model.Compte;
 import com.paymybuddy.paymybuddybackend.model.Transaction;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-public interface TransactionService {
+public interface ITransactionService {
 //    Transaction getTransactionById(Long id);
 //    String getEtatTransactionById(Long id);
 //    BigDecimal getMontantTransactionById(Long id);

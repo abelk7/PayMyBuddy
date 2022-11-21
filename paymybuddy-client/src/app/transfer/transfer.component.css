@@ -1,0 +1,27 @@
+#sendMoneyPanel {
+    height: 130px;
+}
+
+#inputQAmount {
+    width: 150px;
+}
+
+#pay {
+    width: 150px;
+}
+
+#dataTable {
+    text-align: center;
+}
+
+table thead {
+    background-color: #198754;
+    color: white;
+}
+
+th {
+    vertical-align: center;
+    height: 70px;
+}
+
+

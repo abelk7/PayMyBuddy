@@ -1,19 +1,20 @@
 nav {
-  padding-left: 10px;
-  padding-right: 15px;
-  height: 50px;
+    padding-left: 10px;
+    padding-right: 15px;
+    height: 50px;
 }
 
 
 /*code to change background color*/
-.navbar-nav>.active>a {
-  color: rgb(0, 125, 220);
-  font-weight: 450;
+.navbar-nav > .active > a {
+    color: rgb(0, 125, 220);
+    font-weight: 450;
 }
 
- .navbar-nav li a {
-  color: black;
+.navbar-nav li a {
+    color: black;
 }
+
 /*
 .navbar-nav > .active > a {
   color: red ;

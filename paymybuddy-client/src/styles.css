@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+.bg-color-gray {
+    background: lightgray;
+}
+
+.container {
+    margin-top: 60px;
+}

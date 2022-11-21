@@ -1,105 +1,79 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router'
-import { User } from '../model/user';
-import { AuthService } from '../service/auth.service';
-import {first, map} from 'rxjs/operators';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router'
+import {User} from '../model/user';
+import {AuthService} from '../service/auth.service';
+import {first} from 'rxjs/operators';
 import {environment} from "../../environments/environment";
+import {AlertService} from "../service/alert.service";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
 
 
 
-  form!: FormGroup;
+    form!: FormGroup;
 
-  foorm = this.formBuilder.group ({
-    email: [''],
-    password:['']
-  });
+    foorm = this.formBuilder.group({
+        email: [''],
+        password: ['']
+    });
+    user = new User();
 
-
-  constructor(
-    private http: HttpClient,
-    private router:Router,
-    private formBuilder: FormBuilder,
-    private authenticationService : AuthService,
-    private route: ActivatedRoute,
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        private formBuilder: FormBuilder,
+        private authenticationService: AuthService,
+        private route: ActivatedRoute,
+        private alertService: AlertService,
     ) {
 
     }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+        $( "div" ).removeClass( "modal-backdrop fade show" );
 
-  user = new User();
+        this.route.queryParams
+            .subscribe(params => {
+                this.alertService.warn(params.message, {keepAfterRouteChange: true});
+            })
 
-  onSubmit(form: any) {
+    }
 
-  this.authenticationService.login(form.controls.email.value, form.controls.password.value)
-      .pipe(first())
-      .subscribe({
-        next: (data) => {
-          // switch (data.status) {
-          //   case 'success':
-          //     this.alertService.success('Vous êtes maintenant connecté.', { keepAfterRouteChange: true });
-          //     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/actualite';
-          //     this.router.navigateByUrl(returnUrl);
-          //     break;
-          //   case 'error':
-          //     this.alertService.error(data.message);
-          //     this.loading = false;
-          //     break;
-          //   case 'error-confirm':
-          //     console.log("Je suis dans le error confirm");
-          //     this.alertService.warn(data.message, { keepAfterRouteChange: true });
-          //     this.router.navigate(['/confirm']);
-          //     break;
+    onSubmit(form: any) {
 
-          //   default:
-          //     break;
-          // }
-          // console.log(data);
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
-  }
+        this.authenticationService.login2(form.controls.email.value, form.controls.password.value)
+            //if success
+            .then((data: any) => {
+                console.log(data.access_token);
+                //
+                if(data.access_token != undefined && data.refresh_token != undefined) {
+                    sessionStorage.setItem("access_token", data.access_token);
+                    sessionStorage.setItem("refresh_token", data.refresh_token);
+                }
+                if(data.userEmail != undefined){
+                    sessionStorage.setItem("userEmail", data.userEmail);
 
-  // refreshToken() {
-  //   console.log("on bonjour : ");
-  //   // this.http.get(`${environment.apiUrl}/token/refresh`)
-  //   //   .pipe(map((response) => {
-  //   //     console.log(response);
-  //   //   }))
-  //   console.log(sessionStorage.getItem("access_token"))
-  //   this.http.get<any>(`${environment.apiUrl}/token/refresh`).subscribe(data => {
-  //     console.log(data);
-  //   })
-  // }
+                }
 
-  bonjour() {
-    console.log("on bonjour : ");
+                this.alertService.success('Vous êtes maintenant connecté.', { keepAfterRouteChange: true});
+                this.router.navigate(['/home']);
 
-    console.log("access_token (session) : "+ sessionStorage.getItem("access_token"));
-    console.log("access_token (auth) : "+ AuthService.access_token);
-    // this.http.get(`${environment.apiUrl}/token/refresh`)
-    //   .pipe(map((response) => {
-    //     console.log(response);
-    //   }))
-    let options = {
-      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
-    };
+                //if error
+            }, (error) => {
+                // Rejet de la promesse
+                if(error.error == '401') {
+                    this.alertService.error(error.message, {});
+                }
+            });
+    }
 
-    this.http.get<any>(`${environment.apiUrl}/bonjour`,options).subscribe(data => {
-      console.log("MSG : " + data);
-    })
-  }
 }

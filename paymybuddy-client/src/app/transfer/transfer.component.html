@@ -1,1 +1,123 @@
-<p>transfer works!</p>
+<div class="row">
+    <div class="col-8">
+        <h3>Send Money</h3>
+    </div>
+    <div class="col-4">
+        <!--      <button id="btnAddConnection" type="button" class="btn btn-primary float-end">Add Connection</button>-->
+
+        <!-- Button trigger modal -->
+        <button class="btn btn-primary float-end" data-bs-target="#staticBackdrop" data-bs-toggle="modal" type="button">
+            Add Connection
+        </button>
+    </div>
+</div>
+
+<div class="row bg-light" id="sendMoneyPanel">
+    <div class="col-sm-12 my-auto">
+        <div class="d-flex justify-content-center">
+            <div class="p-3">
+                <select aria-label="Default select example" class="form-select">
+                    <option selected>Open this select menu</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+            <div class="p-3">
+                <input class="form-control" id="inputQAmount" type="number" value="0">
+            </div>
+            <div class="p-3">
+                <button class="btn btn-success float-end" id="pay" type="button"> Pay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <h3>My Transactions</h3>
+    <table class="table table-striped" id="dataTable" style="width:100%">
+        <thead>
+        <tr>
+            <th>Connections</th>
+            <th>Description</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Tiger Nixon</td>
+            <td>System Architect</td>
+            <td>Edinburgh</td>
+        </tr>
+        <tr>
+            <td>Garrett Winters</td>
+            <td>Accountant</td>
+            <td>Tokyo</td>
+        </tr>
+        <tr>
+            <td>Ashton Cox</td>
+            <td>Junior Technical Author</td>
+            <td>San Francisco</td>
+        </tr>
+        <tr>
+            <td>Cedric Kelly</td>
+            <td>Senior Javascript Developer</td>
+            <td>Edinburgh</td>
+        </tr>
+        <tr>
+            <td>Airi Satou</td>
+            <td>Accountant</td>
+            <td>Tokyo</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a aria-label="Previous" class="page-link" href="#">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a aria-label="Next" class="page-link" href="#">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="staticBackdropLabel" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false"
+     id="staticBackdrop" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add connection</h5>
+                <button #closeModal aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" *ngIf="errorAddConnection != null" role="alert">
+                    {{ errorAddConnection }}
+                    <button id="btnCloseError" type="button" class="btn-close  float-end btn-sm" (click)="removeAlert()" aria-label="Close"></button>
+                </div>
+
+                <p>Please enter the email address of your correspondent : </p>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">@</span>
+                    <input [(ngModel)]="emailAddConnection" aria-describedby="basic-addon1" aria-label="Email" class="form-control"
+                           placeholder="Email" type="text">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+                <button (click)="onAddConnection()" class="btn btn-success" type="button">Send request</button>
+            </div>
+        </div>
+    </div>
+</div>
