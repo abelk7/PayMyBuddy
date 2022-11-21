@@ -1,12 +1,14 @@
 package com.paymybuddy.paymybuddybackend.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paymybuddy.paymybuddybackend.Util.TokenManager;
-import com.paymybuddy.paymybuddybackend.Util.TokenManager.TOKEN_TYPE;
-import com.paymybuddy.paymybuddybackend.Util.TokenManager.DURATION;
 import com.paymybuddy.paymybuddybackend.exception.UserNotFoundException;
+import com.paymybuddy.paymybuddybackend.model.Token;
+import com.paymybuddy.paymybuddybackend.service.ITokenService;
+import com.paymybuddy.paymybuddybackend.service.IUserService;
+import com.paymybuddy.paymybuddybackend.service.impl.TokenServiceImp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,15 +29,20 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    private TokenManager tokenService;
+    private IUserService userService;
+
+    @Autowired
+    private ITokenService tokenService;
 
     @Override
     public AuthenticationManager getAuthenticationManager() {
         return authenticationManager;
     }
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager){
-        this.authenticationManager = authenticationManager;
+    public CustomAuthenticationFilter(ApplicationContext applicationContext){
+        this.authenticationManager = applicationContext.getBean("authManager", AuthenticationManager.class);
+        this.tokenService=(ITokenService) applicationContext.getBean("tokenService");
+        this.userService =(IUserService) applicationContext.getBean("userService");
     }
 
     @Override
@@ -55,15 +62,34 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException, ServletException {
-//        TokenManager tokenManager = new TokenManager(Algorithm.HMAC512(tokenManager.getEncryptToken().getBytes()));
-        TokenManager tokenManager1 = new TokenManager();
         User userDetail = (User) auth.getPrincipal();
         Map<String, String> content = new HashMap<>();
+        Token token = new Token();
 
-        String access_token = tokenService.getToken(request, response, auth, userDetail.getUsername(), TOKEN_TYPE.ACCESS_TOKEN,DURATION.MIN);
+        String access_token = tokenService.getToken(request, response, auth, userDetail.getUsername(), TokenServiceImp.TOKEN_TYPE.ACCESS_TOKEN, TokenServiceImp.DURATION.MIN);
 
 
-        String refresh_token = tokenService.getToken(request, response, auth, userDetail.getUsername(), TOKEN_TYPE.REFRESH_TOKEN, DURATION.MIN);
+        String refresh_token = tokenService.getToken(request, response, auth, userDetail.getUsername(), TokenServiceImp.TOKEN_TYPE.REFRESH_TOKEN, TokenServiceImp.DURATION.MIN);
+
+        com.paymybuddy.paymybuddybackend.model.User user = userService.getUser(userDetail.getUsername());
+
+        Token tokenSaved = null;
+        if(user != null) {
+            tokenSaved = tokenService.findByUserId(user.getId());
+        }
+
+        if(tokenSaved != null) {
+            tokenService.deleteToken(tokenSaved);
+        }
+
+        if(user != null) {
+            token.setUser(user);
+            token.setRefreshToken(refresh_token);
+            tokenService.saveToken(token);
+        }
+
+
+
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");

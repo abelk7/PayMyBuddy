@@ -2,6 +2,7 @@ package com.paymybuddy.paymybuddybackend.security;
 
 import com.paymybuddy.paymybuddybackend.security.filter.CustomAuthenticationFilter;
 import com.paymybuddy.paymybuddybackend.security.filter.CustomAuthorizationFilter;
+import com.paymybuddy.paymybuddybackend.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -40,9 +41,7 @@ import java.util.Arrays;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-//@EnableWebSecurity
 @RequiredArgsConstructor
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
@@ -50,6 +49,8 @@ public class SecurityConfig {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     ApplicationContext applicationContext;
+    @Autowired
+    private IUserService userService;
 
 
     @Bean
@@ -64,7 +65,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(applicationContext.getBean("authManager", AuthenticationManager.class));
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter( applicationContext);
+        CustomAuthorizationFilter customAuthorizationFilter =  new CustomAuthorizationFilter(applicationContext);
+
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
 
 
@@ -90,7 +93,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(customAuthenticationFilter)
-                .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -24,6 +24,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UserNotFoundException {
         User user = userRepository.findByEmail(email);

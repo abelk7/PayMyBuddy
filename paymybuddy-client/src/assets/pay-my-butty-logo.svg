@@ -1,14 +1,17 @@
-<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
- <defs>
-  <linearGradient spreadMethod="pad" y2="0" x2="1" y1="0" x1="0" id="svg_18">
-   <stop offset="0.21484" stop-opacity="0.96484" stop-color="#007f00"/>
-   <stop offset="0.95703" stop-opacity="0.99219" stop-color="#60c100"/>
-  </linearGradient>
- </defs>
- <g>
-  <title>Layer 1</title>
-  <rect fill-opacity="0.96" rx="30" stroke="#000" id="svg_1" height="228.99999" width="752.00002" y="83.00001" x="26.99998" fill="url(#svg_18)"/>
-  <polyline stroke-linecap="round" id="svg_3" points="431,337 431,337 " stroke="#000" fill="none"/>
-  <text font-weight="bold" transform="matrix(3.32676 0 0 4.39064 -548.636 -992.95)" stroke="#000" xml:space="preserve" text-anchor="start" font-family="'Public Sans'" font-size="24" stroke-width="0" id="svg_12" y="279.19309" x="201.26947" fill="#ffffff">Pay  My  Buddy</text>
- </g>
+<svg height="400" width="800" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="svg_18" spreadMethod="pad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0.21484" stop-color="#007f00" stop-opacity="0.96484"/>
+            <stop offset="0.95703" stop-color="#60c100" stop-opacity="0.99219"/>
+        </linearGradient>
+    </defs>
+    <g>
+        <title>Layer 1</title>
+        <rect fill="url(#svg_18)" fill-opacity="0.96" height="228.99999" id="svg_1" rx="30" stroke="#000" width="752.00002"
+              x="26.99998" y="83.00001"/>
+        <polyline fill="none" id="svg_3" points="431,337 431,337 " stroke="#000" stroke-linecap="round"/>
+        <text fill="#ffffff" font-family="'Public Sans'" font-size="24"
+              font-weight="bold" id="svg_12" stroke="#000" stroke-width="0" text-anchor="start"
+              transform="matrix(3.32676 0 0 4.39064 -548.636 -992.95)" x="201.26947" xml:space="preserve" y="279.19309">Pay  My  Buddy</text>
+    </g>
 </svg>
